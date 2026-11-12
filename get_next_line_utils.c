@@ -6,7 +6,7 @@
 /*   By: asanz-al <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/01 13:39:25 by asanz-al          #+#    #+#             */
-/*   Updated: 2026/11/02 20:13:26 by asanz-al         ###   ########.fr       */
+/*   Updated: 2026/11/05 20:26:04 by asanz-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,48 +16,82 @@ int	ft_strlen(char *str)
 {
 	int	i;
 	
-	i = 0;
 	while (str[i])
 		i++;
 	return (i);
 }
 
-char    *ft_strjoin(char *s1, char *s2)
+char	*ft_strdup(char *s)
 {
-        char    *newstr;
-        char    *ptr;
-        char    *orig_s1; // Guardamos el puntero original para poder hacer free de s1 si es necesario
+	char	*ptr;
+	size_t	i;
+	size_t	len;
 
-        if (!s2)
-                return (NULL);
-        // Si s1 es NULL, lo tratamos temporalmente como un string vacío
-        orig_s1 = s1;
-        if (!s1)
-                s1 = "";
-        newstr = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-        if (!newstr)
-                return (NULL);
-        ptr = newstr;
-        while (*s1)
-                *ptr++ = *s1++;
-        while (*s2)
-                *ptr++ = *s2++;
-        *ptr = '\0';
-        if (orig_s1)
-                free(orig_s1);
-        return (newstr);
+	i = 0;
+	len = (size_t)ft_strlen(s);
+	ptr = malloc(len + 1);
+	if (!ptr)
+		return (NULL);
+	while (i < len)
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	unsigned char	*d;
-	unsigned char	*s;
+	char	*newstr;
+	int		i;
+	int		j;
 
-	if (!dest && !src)
+	if (!s1 || !s2)
 		return (NULL);
-	d = (unsigned char *)dest;
-	s = (unsigned char *)src;
-	while (n--)
-		*d++ = *s++;
-	return (dest);
+	i = 0;
+	j = 0;
+	newstr = malloc(ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1);
+	if (!newstr)
+		return (NULL);
+	while (s1[i])
+	{
+		newstr[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		newstr[i] = s2[j];
+		i++;
+		j++;
+	}
+	newstr[i] = '\0';
+	return (newstr);
+}
+char	*ft_strchr(char *s, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if ((unsigned char)s[i] == (unsigned char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((unsigned char)s[i] == (unsigned char)c)
+		return ((char *)&s[i]);
+	return (NULL);
+}
+
+void	*ft_free_null(void **ptr)
+{
+	if (!ptr || !*ptr)
+		return (NULL);
+	if (*ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+	return (NULL);
 }
